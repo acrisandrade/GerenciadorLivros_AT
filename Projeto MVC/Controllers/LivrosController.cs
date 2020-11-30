@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Dominio_GerenciadorLivros.Models;
+using Dominio_GerenciadorLivros.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projeto_MVC.Data;
 using Projeto_MVC.Models;
-using Projeto_MVC.ViewModels;
+
 
 namespace Projeto_MVC.Controllers
 {
@@ -47,7 +49,7 @@ namespace Projeto_MVC.Controllers
         // GET: Livros/Create
         public IActionResult Create()
         {
-            var v = new LivroViewModel();
+            var v = new LivrosViewModel();
             v.TodosAutores = _context.Autor.ToList();
             return View(v);
         }

@@ -1,12 +1,11 @@
-﻿using Projeto_MVC.Models;
+﻿using Dominio_GerenciadorLivros.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace Projeto_MVC.ViewModels
+namespace Dominio_GerenciadorLivros.ViewModel
 {
-    public class LivroViewModel
+    public class LivrosViewModel
     {
         public string Titulo { get; set; }
         public string ISBN { get; set; }

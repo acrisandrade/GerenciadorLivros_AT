@@ -33,7 +33,7 @@
                 <select id="framework" name="framework[]" multiple class="form-control">
                     @{ foreach (var autor in Model.TodosAutores)
                         {
-                            <option value="@autor">@autor.</option>
+                            <option value="@autor">@autor.Nome @autor.Sobrenome</option>
                         }
                     }
                 </select>

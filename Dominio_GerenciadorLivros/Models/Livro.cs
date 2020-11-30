@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace Projeto_MVC.Models
+namespace Dominio_GerenciadorLivros.Models
 {
     public class Livro
     {
         public Guid Id { get; set; }
         public string Titulo { get; set; }
         public string ISBN { get; set; }
-        public string Ano { get; set;}
+        public string Ano { get; set; }
         public List<ID_Classes> Autores { get; set; }
     }
 }
