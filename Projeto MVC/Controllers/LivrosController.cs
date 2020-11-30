@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Projeto_MVC.Data;
 using Projeto_MVC.Models;
+using Projeto_MVC.ViewModels;
 
 namespace Projeto_MVC.Controllers
 {
@@ -46,7 +47,9 @@ namespace Projeto_MVC.Controllers
         // GET: Livros/Create
         public IActionResult Create()
         {
-            return View();
+            var v = new LivroViewModel();
+            v.TodosAutores = _context.Autor.ToList();
+            return View(v);
         }
 
         // POST: Livros/Create
