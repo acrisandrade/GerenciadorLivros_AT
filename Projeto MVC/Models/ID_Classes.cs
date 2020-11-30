@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 namespace Projeto_MVC.Models
 {
     public class ID_Classes
-    {
-        public Guid Id { get; set;}
-        public List<Livro> Livros { get; set; }
-        public List<Autor> Autores { get; set; }
+    {   
+        public Guid LivrosId { get; set; }
+        public Guid AutoresId { get; set; }
+        public Livro Livros { get; set; }
+        public Autor Autores { get; set; }
         
     }
 }

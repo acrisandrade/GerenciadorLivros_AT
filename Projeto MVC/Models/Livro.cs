@@ -11,7 +11,6 @@ namespace Projeto_MVC.Models
         public string Titulo { get; set; }
         public string ISBN { get; set; }
         public string Ano { get; set;}
-        [ManyToMany]
-        public List<Autor> Autores { get; set;}
+        public List<ID_Classes> Autores { get; set; }
     }
 }

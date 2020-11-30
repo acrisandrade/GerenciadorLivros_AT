@@ -13,6 +13,6 @@ namespace Projeto_MVC.Models
         public string Sobrenome  { get; set; }
         public string Email { get; set; }
         public DateTime DataNascimento { get; set; }
-        public List<Livro> Livros { get; set;}
+        public List<ID_Classes> Livros { get; set;}
     }
 }
