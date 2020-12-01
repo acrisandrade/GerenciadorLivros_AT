@@ -12,33 +12,16 @@ namespace Projeto_MVC.Controllers
 {
     public class AutoresController : Controller
     {
-        private readonly ApplicationDbContext _context;
-
-        public AutoresController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
         // GET: Autors
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Autor.ToListAsync());
+            return View();
         }
 
         // GET: Autors/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var autor = await _context.Autor
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (autor == null)
-            {
-                return NotFound();
-            }
+            
 
             return View(autor);
         }
@@ -56,29 +39,14 @@ namespace Projeto_MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nome,Sobrenome,Email,DataNascimento")] Autor autor)
         {
-            if (ModelState.IsValid)
-            {
-                autor.Id = Guid.NewGuid();
-                _context.Add(autor);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
+            
             return View(autor);
         }
 
         // GET: Autors/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var autor = await _context.Autor.FindAsync(id);
-            if (autor == null)
-            {
-                return NotFound();
-            }
+            
             return View(autor);
         }
 
@@ -89,48 +57,14 @@ namespace Projeto_MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Nome,Sobrenome,Email,DataNascimento")] Autor autor)
         {
-            if (id != autor.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(autor);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!AutorExists(autor.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
+           
             return View(autor);
         }
 
         // GET: Autors/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var autor = await _context.Autor
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (autor == null)
-            {
-                return NotFound();
-            }
+            
 
             return View(autor);
         }
@@ -140,15 +74,12 @@ namespace Projeto_MVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var autor = await _context.Autor.FindAsync(id);
-            _context.Autor.Remove(autor);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            
         }
 
         private bool AutorExists(Guid id)
         {
-            return _context.Autor.Any(e => e.Id == id);
+            return ;
         }
     }
 }

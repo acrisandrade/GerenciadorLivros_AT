@@ -2,8 +2,8 @@
 using Dominio_GerenciadorLivros.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace BancoDB.Repositorios
@@ -33,9 +33,9 @@ namespace BancoDB.Repositorios
             }
         }
 
-        public async Task<bool> Delete (Guid Id)
+        public async Task<bool> Delete(Guid Id)
         {
-            
+
             var autor = await _autor.FindAsync(Id);
             if (autor == null)
             {
@@ -44,11 +44,11 @@ namespace BancoDB.Repositorios
             _autor.Remove(autor);
             await _context.SaveChangesAsync();
             return true;
-        } 
+        }
 
         public async Task<Autor> Editar(Autor autor)
         {
-            if(autor.Id == null)
+            if (autor.Id == null)
             {
                 return null;
             }
@@ -63,5 +63,21 @@ namespace BancoDB.Repositorios
             }
             return autor;
         }
+        public async Task<Autor> Detalhes(Guid Id)
+        {
+            var autores = await _autor.FindAsync(Id);
+
+            if (autores == null)
+            {
+                return null;
+            }
+            return autores;
+        }
+        public async Task<IEnumerable<Autor>> ListarTodos()
+        {
+            var autores = await _autor.ToListAsync();
+            return autores; 
+        }
     }
 }
+
