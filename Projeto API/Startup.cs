@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ServicosAplicacao.InjecaoServicos;
+using ServicosAplicacao.Servicos;
 
 namespace Projeto_API
 {
@@ -26,6 +28,8 @@ namespace Projeto_API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddTransient<ServicosAutor>();
+            ConfiguracaoInjecaoRepositorio.ConfigurarRepositorio(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Dominio_GerenciadorLivros.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Projeto_MVC.Data;
 
 namespace Projeto_MVC.Controllers
@@ -14,39 +17,69 @@ namespace Projeto_MVC.Controllers
     {
         // GET: Autors
         public async Task<IActionResult> Index()
-        {
-            return View();
+        { 
+            List<Autor> ListaAutores = new List<Autor>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44376/api/autores/"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    ListaAutores = JsonConvert.DeserializeObject<List<Autor>>(apiResponse);
+                }
+            }
+            return View(ListaAutores);
         }
 
         // GET: Autors/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            
-
+            var autor = new Autor();
+            using(var httpClient = new HttpClient())
+            {
+                using(var reponse = await httpClient.GetAsync("https://localhost:44376/api/autores/" + id))
+                {
+                    string apiResponse = await reponse.Content.ReadAsStringAsync();
+                    autor = JsonConvert.DeserializeObject<Autor>(apiResponse);
+                }
+            }
             return View(autor);
         }
 
         // GET: Autors/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        public ViewResult Create() => View();
 
         // POST: Autors/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Sobrenome,Email,DataNascimento")] Autor autor)
+        public async Task<IActionResult> Create(Autor autor)
         {
-            
-            return View(autor);
+            Autor autores = new Autor();
+            using(var httpClient = new HttpClient())
+            {
+                StringContent content = new StringContent(JsonConvert.SerializeObject(autor), Encoding.UTF8, "application/json");
+                using(var response = await httpClient.PostAsync("https://localhost:44376/api/autores/", content))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    autores = JsonConvert.DeserializeObject<Autor>(apiResponse);
+                }
+            }
+            return RedirectToAction(nameof(Details), new { id = autores.Id });
         }
 
         // GET: Autors/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            
+            Autor autor = new Autor();
+            using (var httpClient = new HttpClient())
+            {
+                using(var response = await httpClient.GetAsync("https://localhost:44376/api/autores/" + id))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    autor = JsonConvert.DeserializeObject<Autor>(apiResponse);
+                }
+            }
             return View(autor);
         }
 
@@ -55,31 +88,39 @@ namespace Projeto_MVC.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Nome,Sobrenome,Email,DataNascimento")] Autor autor)
+        public async Task<IActionResult> Edit( Autor autor)
         {
-           
-            return View(autor);
-        }
+            Autor autorEdit = new Autor();
+            using(var httpClient = new HttpClient())
+            {
+                var content = new MultipartFormDataContent();
+                content.Add(new StringContent(autor.Id.ToString()), "Id");
+                content.Add(new StringContent(autor.Nome.ToString()), "Nome");
+                content.Add(new StringContent(autor.Sobrenome.ToString()), "Sobrenome");
+                content.Add(new StringContent(autor.Email.ToString()), "Email");
+               // content.Add(new StringContent(autor.Livros.ToString()), "Livros");
 
-        // GET: Autors/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
+                using (var response = await httpClient.PutAsync("https://localhost:44376/api/autores/", content))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    autorEdit = JsonConvert.DeserializeObject<Autor>(apiResponse);
+                }
+            }
+            return RedirectToAction(nameof(Details), new { id = autorEdit.Id });
             
-
-            return View(autor);
         }
 
-        // POST: Autors/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> Delete(Guid id)
         {
+            using (var httpClient = new HttpClient())
+            {
+                using(var response = await  httpClient.DeleteAsync("https://localhost:44376/api/autores/" + id))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                }
+                return RedirectToAction(nameof(Create));
+            }
             
-        }
-
-        private bool AutorExists(Guid id)
-        {
-            return ;
         }
     }
 }

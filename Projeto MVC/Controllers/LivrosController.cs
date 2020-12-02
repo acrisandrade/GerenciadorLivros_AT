@@ -21,7 +21,7 @@ namespace Projeto_MVC.Controllers
         {
             _context = context;
         }
-
+        /*
         // GET: Livros
         public async Task<IActionResult> Index()
         {
@@ -154,6 +154,6 @@ namespace Projeto_MVC.Controllers
         private bool LivroExists(Guid id)
         {
             return _context.Livro.Any(e => e.Id == id);
-        }
+        }*/
     }
 }

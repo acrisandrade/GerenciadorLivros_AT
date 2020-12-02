@@ -45,7 +45,7 @@ namespace Projeto_API.Controllers
 
         // PUT api/<AutoresController>/5
         [HttpPut]
-        public async Task<Autor> Put(Autor autor)
+        public async Task<Autor> Put([FromForm] Autor autor)
         {
             var r = await _autorServicos.Editar(autor);
             return r;
