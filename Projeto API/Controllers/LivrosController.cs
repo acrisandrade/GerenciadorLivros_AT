@@ -36,15 +36,15 @@ namespace Projeto_API.Controllers
 
         // POST api/<LivrosController>
         [HttpPost]
-        public async Task<Livro> Post([FromBody] Livro livro)
+        public async Task<Livro> Post(Livro livro)
         {
             var l = await _livroServicos.Cadastrar(livro);
             return l;
         }
 
         // PUT api/<LivrosController>/5
-        [HttpPut("{id}")]
-        public async Task<Livro> Put([FromBody]Livro livro)
+        [HttpPut]
+        public async Task<Livro> Put([FromForm]Livro livro)
         {
             var l = await _livroServicos.Editar(livro);
             return l;

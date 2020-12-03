@@ -31,7 +31,7 @@ namespace Projeto_MVC.Controllers
             List<Livro> ListaLivros = new List<Livro>();
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44381/api/Livros/"))
+                using (var response = await httpClient.GetAsync("https://localhost:44376/api/Livros/"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     ListaLivros = JsonConvert.DeserializeObject<List<Livro>>(apiResponse);
@@ -46,7 +46,7 @@ namespace Projeto_MVC.Controllers
             var livro = new Livro();
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44381/api/Livros/" + id))
+                using (var response = await httpClient.GetAsync("https://localhost:44376/api/Livros/" + id))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     livro = JsonConvert.DeserializeObject<Livro>(apiResponse);
@@ -69,7 +69,7 @@ namespace Projeto_MVC.Controllers
             using (var httpClient = new HttpClient())
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(livro), Encoding.UTF8, "application/json");
-                using (var response = await httpClient.PostAsync("https://localhost:44381/api/Livros/", content))
+                using (var response = await httpClient.PostAsync("https://localhost:44376/api/livros/", content))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     livros = JsonConvert.DeserializeObject<Livro>(apiResponse);
@@ -85,7 +85,7 @@ namespace Projeto_MVC.Controllers
             Livro livros = new Livro();
             using(var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:44381/api/Livros/" + id))
+                using (var response = await httpClient.GetAsync("https://localhost:44376/api/Livros/" + id))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     livros = JsonConvert.DeserializeObject<Livro>(apiResponse);
@@ -110,7 +110,7 @@ namespace Projeto_MVC.Controllers
                 content.Add(new StringContent(livro.ISBN.ToString()), "ISBN");
                 content.Add(new StringContent(livro.Ano.ToString()), "Ano");
 
-                using (var response = await httpClient.PutAsync("https://localhost:44381/api/Livros/", content))
+                using (var response = await httpClient.PutAsync("https://localhost:44376/api/Livros/", content))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     livroEdit = JsonConvert.DeserializeObject<Livro>(apiResponse);
@@ -124,7 +124,7 @@ namespace Projeto_MVC.Controllers
         {
             using(var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.DeleteAsync("https://localhost:44381/api/Livros/" + id))
+                using (var response = await httpClient.DeleteAsync("https://localhost:44376/api/Livros/" + id))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                 }

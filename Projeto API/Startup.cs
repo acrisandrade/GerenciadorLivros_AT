@@ -29,6 +29,7 @@ namespace Projeto_API
         {
             services.AddControllers();
             services.AddTransient<ServicosAutor>();
+            services.AddTransient<ServicosLivro>();
             ConfiguracaoInjecaoRepositorio.ConfigurarRepositorio(services);
         }
 

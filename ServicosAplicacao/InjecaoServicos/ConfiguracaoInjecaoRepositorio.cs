@@ -17,6 +17,7 @@ namespace ServicosAplicacao.InjecaoServicos
             services.AddDbContext<Context>(
                 options => options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=BancoGerenciamentoLivros;Trusted_Connection=True;MultipleActiveResultSets=true"));
             services.AddScoped<AutorRepositorio>();
+            services.AddScoped<LivroRepositorio>();
         }
     }
 }

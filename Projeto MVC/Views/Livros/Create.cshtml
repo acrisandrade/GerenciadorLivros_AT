@@ -1,4 +1,4 @@
-﻿@model LivrosViewModel
+﻿@model Livro
 
 @{
     ViewData["Title"] = "Create";
@@ -27,25 +27,14 @@
                 <input asp-for="Ano" class="form-control" />
                 <span asp-validation-for="Ano" class="text-danger"></span>
             </div>
-            <!--Adiconado select de autores-->
-            <div class="form-group">
-                <label>Selecione os autores desta obra incrível</label>
-                <select id="framework" name="framework[]" multiple class="form-control">
-                    @{ foreach (var autor in Model.TodosAutores)
-                        {
-                            <option value="@autor">@autor.Nome @autor.Sobrenome</option>
-                        }
-                    }
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-info" name="submit" value="Submit" />
-            </div>
-            <!--Adiconado select de autores-->
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+      
+                <div class="form-group">
+                    <input type="submit" class="btn btn-info" name="submit" value="Submit" />
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+</form>
     </div>
 </div>
 
