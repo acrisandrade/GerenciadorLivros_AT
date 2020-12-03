@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Dominio_GerenciadorLivros.Models;
 using Dominio_GerenciadorLivros.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Projeto_MVC.Data;
 using Projeto_MVC.Models;
 
@@ -15,76 +18,80 @@ namespace Projeto_MVC.Controllers
 {
     public class LivrosController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        /* private readonly ApplicationDbContext _context;
 
-        public LivrosController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-        /*
+         public LivrosController(ApplicationDbContext context)
+         {
+             _context = context;
+         }*/
+
         // GET: Livros
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Livro.ToListAsync());
+            List<Livro> ListaLivros = new List<Livro>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44381/api/Livros/"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    ListaLivros = JsonConvert.DeserializeObject<List<Livro>>(apiResponse);
+                }
+            }
+            return View(ListaLivros);
         }
 
         // GET: Livros/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null)
+            var livro = new Livro();
+            using (var httpClient = new HttpClient())
             {
-                return NotFound();
+                using (var response = await httpClient.GetAsync("https://localhost:44381/api/Livros/" + id))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    livro = JsonConvert.DeserializeObject<Livro>(apiResponse);
+                }
             }
-
-            var livro = await _context.Livro
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (livro == null)
-            {
-                return NotFound();
-            }
-
             return View(livro);
         }
 
         // GET: Livros/Create
-        public IActionResult Create()
-        {
-            var v = new LivrosViewModel();
-            v.TodosAutores = _context.Autor.ToList();
-            return View(v);
-        }
+        public ViewResult Create() => View();
 
         // POST: Livros/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,ISBN,Ano")] Livro livro)
+        public async Task<IActionResult> Create(Livro livro)
         {
-            if (ModelState.IsValid)
+            Livro livros = new Livro();
+            using (var httpClient = new HttpClient())
             {
-                livro.Id = Guid.NewGuid();
-                _context.Add(livro);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                StringContent content = new StringContent(JsonConvert.SerializeObject(livro), Encoding.UTF8, "application/json");
+                using (var response = await httpClient.PostAsync("https://localhost:44381/api/Livros/", content))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    livros = JsonConvert.DeserializeObject<Livro>(apiResponse);
+                }
             }
-            return View(livro);
+            return RedirectToAction(nameof(Details), new { id = livros.Id });
         }
+    
 
         // GET: Livros/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            if (id == null)
+            Livro livros = new Livro();
+            using(var httpClient = new HttpClient())
             {
-                return NotFound();
+                using (var response = await httpClient.GetAsync("https://localhost:44381/api/Livros/" + id))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    livros = JsonConvert.DeserializeObject<Livro>(apiResponse);
+                }
             }
-
-            var livro = await _context.Livro.FindAsync(id);
-            if (livro == null)
-            {
-                return NotFound();
-            }
-            return View(livro);
+            return View(livros);
         }
 
         // POST: Livros/Edit/5
@@ -92,68 +99,40 @@ namespace Projeto_MVC.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Titulo,ISBN,Ano")] Livro livro)
+        public async Task<IActionResult> Edit(Livro livro)
         {
-            if (id != livro.Id)
+            Livro livroEdit = new Livro();
+            using(var httpClient = new HttpClient())
             {
-                return NotFound();
-            }
+                var content = new MultipartFormDataContent();
+                content.Add(new StringContent(livro.Id.ToString()), "Id");
+                content.Add(new StringContent(livro.Titulo.ToString()), "Titulo");
+                content.Add(new StringContent(livro.ISBN.ToString()), "ISBN");
+                content.Add(new StringContent(livro.Ano.ToString()), "Ano");
 
-            if (ModelState.IsValid)
-            {
-                try
+                using (var response = await httpClient.PutAsync("https://localhost:44381/api/Livros/", content))
                 {
-                    _context.Update(livro);
-                    await _context.SaveChangesAsync();
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    livroEdit = JsonConvert.DeserializeObject<Livro>(apiResponse);
                 }
-                catch (DbUpdateConcurrencyException)
+            }
+            return RedirectToAction(nameof(Details), new { id = livroEdit.Id });
+        }
+
+     
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            using(var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.DeleteAsync("https://localhost:44381/api/Livros/" + id))
                 {
-                    if (!LivroExists(livro.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    string apiResponse = await response.Content.ReadAsStringAsync();
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Create));
             }
-            return View(livro);
+            
         }
 
-        // GET: Livros/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var livro = await _context.Livro
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (livro == null)
-            {
-                return NotFound();
-            }
-
-            return View(livro);
-        }
-
-        // POST: Livros/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
-        {
-            var livro = await _context.Livro.FindAsync(id);
-            _context.Livro.Remove(livro);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool LivroExists(Guid id)
-        {
-            return _context.Livro.Any(e => e.Id == id);
-        }*/
+       
     }
 }
