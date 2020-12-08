@@ -28,13 +28,13 @@ namespace Projeto_MVC.Controllers
         // GET: Livros
         public async Task<IActionResult> Index()
         {
-            List<Livro> ListaLivros = new List<Livro>();
+            List<LivrosViewModel> ListaLivros = new List<LivrosViewModel>();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync("https://localhost:44376/api/Livros/"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    ListaLivros = JsonConvert.DeserializeObject<List<Livro>>(apiResponse);
+                    ListaLivros = JsonConvert.DeserializeObject<List<LivrosViewModel>>(apiResponse);
                 }
             }
             return View(ListaLivros);
@@ -43,13 +43,13 @@ namespace Projeto_MVC.Controllers
         // GET: Livros/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            var livro = new Livro();
+            var livro = new LivrosViewModel();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync("https://localhost:44376/api/Livros/" + id))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    livro = JsonConvert.DeserializeObject<Livro>(apiResponse);
+                    livro = JsonConvert.DeserializeObject<LivrosViewModel>(apiResponse);
                 }
             }
             return View(livro);
@@ -63,16 +63,16 @@ namespace Projeto_MVC.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Livro livro)
+        public async Task<IActionResult> Create(LivrosViewModel livro)
         {
-            Livro livros = new Livro();
+           LivrosViewModel livros = new LivrosViewModel();
             using (var httpClient = new HttpClient())
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(livro), Encoding.UTF8, "application/json");
                 using (var response = await httpClient.PostAsync("https://localhost:44376/api/livros/", content))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    livros = JsonConvert.DeserializeObject<Livro>(apiResponse);
+                    livros = JsonConvert.DeserializeObject<LivrosViewModel>(apiResponse);
                 }
             }
             return RedirectToAction(nameof(Details), new { id = livros.Id });
@@ -82,13 +82,13 @@ namespace Projeto_MVC.Controllers
         // GET: Livros/Edit/5
         public async Task<IActionResult> Edit(Guid? id)
         {
-            Livro livros = new Livro();
+            LivrosViewModel livros = new LivrosViewModel();
             using(var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync("https://localhost:44376/api/Livros/" + id))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    livros = JsonConvert.DeserializeObject<Livro>(apiResponse);
+                    livros = JsonConvert.DeserializeObject<LivrosViewModel>(apiResponse);
                 }
             }
             return View(livros);
@@ -99,9 +99,9 @@ namespace Projeto_MVC.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Livro livro)
+        public async Task<IActionResult> Edit(LivrosViewModel livro)
         {
-            Livro livroEdit = new Livro();
+            LivrosViewModel livroEdit = new LivrosViewModel();
             using(var httpClient = new HttpClient())
             {
                 var content = new MultipartFormDataContent();
@@ -113,7 +113,7 @@ namespace Projeto_MVC.Controllers
                 using (var response = await httpClient.PutAsync("https://localhost:44376/api/Livros/", content))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    livroEdit = JsonConvert.DeserializeObject<Livro>(apiResponse);
+                    livroEdit = JsonConvert.DeserializeObject<LivrosViewModel>(apiResponse);
                 }
             }
             return RedirectToAction(nameof(Details), new { id = livroEdit.Id });
@@ -128,7 +128,7 @@ namespace Projeto_MVC.Controllers
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                 }
-                return RedirectToAction(nameof(Create));
+                return RedirectToAction(nameof(Index));
             }
             
         }

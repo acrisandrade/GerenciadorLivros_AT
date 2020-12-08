@@ -10,6 +10,7 @@ namespace Dominio_GerenciadorLivros.ViewModel
         public string Titulo { get; set; }
         public string ISBN { get; set; }
         public string Ano { get; set; }
+        public Guid Id { get; set; }
         public IEnumerable<Autor> TodosAutores { get; set; }
     }
 }
