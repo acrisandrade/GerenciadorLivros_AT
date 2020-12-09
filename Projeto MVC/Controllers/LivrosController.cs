@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dominio_GerenciadorLivros.Models;
 using Dominio_GerenciadorLivros.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,7 @@ using Projeto_MVC.Models;
 
 namespace Projeto_MVC.Controllers
 {
+     //[Authorize]
     public class LivrosController : Controller
     {
         /* private readonly ApplicationDbContext _context;
@@ -56,19 +58,55 @@ namespace Projeto_MVC.Controllers
         }
 
         // GET: Livros/Create
-        public ViewResult Create() => View();
-
+        public async Task<ViewResult> Create()
+        {
+            List<Autor> ListaAutores = new List<Autor>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:44376/api/autores/"))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    ListaAutores = JsonConvert.DeserializeObject<List<Autor>>(apiResponse);
+                }
+            }
+            var l = new LivrosViewModel()
+            {
+                TodosAutores = ListaAutores,
+            };
+            return View(l);
+        }
         // POST: Livros/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(LivrosViewModel livro)
+        public async Task<IActionResult> Create([FromForm] string Titulo, string ISBN, string Ano, IEnumerable<string> TodosAutores)
         {
-           LivrosViewModel livros = new LivrosViewModel();
+
+            LivrosViewModel livros = new LivrosViewModel();
+            var autores
+            foreach (var a in TodosAutores)
+            {
+                var autor = new Autor();
+                using (var httpClient = new HttpClient())
+                {
+                    using (var reponse = await httpClient.GetAsync("https://localhost:44376/api/autores/" + id))
+                    {
+                        string apiResponse = await reponse.Content.ReadAsStringAsync();
+                        autor = JsonConvert.DeserializeObject<Autor>(apiResponse);
+                    }
+                }
+            }
+            var livro = new Livro()
+            {
+                Titulo = Titulo,
+                ISBN = ISBN,
+                Ano = Ano,
+                Autores.
+            };
             using (var httpClient = new HttpClient())
             {
-                StringContent content = new StringContent(JsonConvert.SerializeObject(livro), Encoding.UTF8, "application/json");
+                StringContent content = new StringContent(JsonConvert.SerializeObject(livros), Encoding.UTF8, "application/json");
                 using (var response = await httpClient.PostAsync("https://localhost:44376/api/livros/", content))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();

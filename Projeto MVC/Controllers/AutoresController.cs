@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Dominio_GerenciadorLivros.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using Projeto_MVC.Data;
 
 namespace Projeto_MVC.Controllers
 {
+    //[Authorize] 
     public class AutoresController : Controller
     {
         // GET: Autors

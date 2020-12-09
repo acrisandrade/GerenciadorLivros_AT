@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dominio_GerenciadorLivros.Models;
+using Dominio_GerenciadorLivros.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using ServicosAplicacao.Servicos;
 
@@ -15,11 +16,14 @@ namespace Projeto_API.Controllers
     public class LivrosController : ControllerBase
     {
         private readonly ServicosLivro _livroServicos;
+        private readonly ServicosAutor _servicosAutor;
 
-        public LivrosController(ServicosLivro servico)
+        public LivrosController(ServicosLivro livroServicos, ServicosAutor servicosAutor)
         {
-            _livroServicos = servico;
+            _livroServicos = livroServicos;
+            _servicosAutor = servicosAutor;
         }
+
         [HttpGet]
         public async Task <IEnumerable<Livro>> Get()
         {
@@ -28,10 +32,19 @@ namespace Projeto_API.Controllers
 
         // GET api/<LivrosController>/5
         [HttpGet("{id}")]
-        public async Task <Livro> Get(Guid id)
+        public async Task <LivrosViewModel> Get(Guid id)
         {
             var livros = await _livroServicos.LivroEspecifico(id);
-            return livros;
+            var autores = _servicosAutor.Listar();
+            var viewLivro = new LivrosViewModel()
+            {
+                Id = livros.Id,
+                Titulo = livros.Titulo,
+                ISBN = livros.ISBN,
+                Ano = livros.Ano,
+                TodosAutores = autores.Result,
+            };
+            return viewLivro;
         }
 
         // POST api/<LivrosController>

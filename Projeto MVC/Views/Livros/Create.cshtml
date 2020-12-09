@@ -27,16 +27,26 @@
                 <input asp-for="Ano" class="form-control" />
                 <span asp-validation-for="Ano" class="text-danger"></span>
             </div>
-      
+            <!--form method="post" id="framework_form"-->
                 <div class="form-group">
-                    <input type="submit" class="btn btn-info" name="submit" value="Submit" />
+                    <label asp-for="TodosAutores" class="control-label"></label>
+                    <br />
+                    <select id="autores" asp-for="TodosAutores" multiple class="form-control">
+                        @{ foreach (var autor in Model.TodosAutores)
+                            {
+                                <option value="@autor.Id">@autor.Nome</option>
+                            }
+                        }
+                    </select>
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
-</form>
+            <!--/-form-->
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
 </div>
+
 
 <div>
     <a asp-action="Index">Back to List</a>
@@ -44,4 +54,7 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{await Html.RenderPartialAsync("_ScriptCorori");}
+} 
+
+

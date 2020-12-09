@@ -35,11 +35,3 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-<select class="selectpicker" multiple>
-    @foreach(var a in Model.TodosAutores) {
-        <option>@($"{a.Nome} {a.Sobrenome}")</option>
-    }
-    
-
-</select>
-
