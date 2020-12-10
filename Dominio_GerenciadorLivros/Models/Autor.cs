@@ -12,5 +12,10 @@ namespace Dominio_GerenciadorLivros.Models
         public string Email { get; set; }
         public DateTime DataNascimento { get; set; }
         public List<ID_Classes> Livros { get; set; }
+
+        public Autor()
+        {
+            Livros = new List<ID_Classes>();
+        }
     }
 }
