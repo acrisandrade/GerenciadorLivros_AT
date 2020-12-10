@@ -29,12 +29,12 @@
             @Html.DisplayFor(model => model.Ano)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.TodosAutores)
+           Autor
         </dt>
         @foreach (var a in Model.TodosAutores)
         {
             <dd class="col-sm-10">
-                @($"{a.Nome} {a.Sobrenome}")
+                @($" {a.Nome} {a.Sobrenome}")
             </dd>
         }
     </dl>

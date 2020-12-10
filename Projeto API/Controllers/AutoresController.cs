@@ -13,7 +13,7 @@ namespace Projeto_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class AutoresController : ControllerBase
     {
         private readonly ServicosAutor _autorServicos;

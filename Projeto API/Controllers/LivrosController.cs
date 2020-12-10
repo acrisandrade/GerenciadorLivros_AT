@@ -14,7 +14,7 @@ namespace Projeto_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class LivrosController : ControllerBase
     {
         private readonly ServicosLivro _livroServicos;

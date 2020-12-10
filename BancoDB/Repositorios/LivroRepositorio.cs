@@ -80,6 +80,11 @@ namespace BancoDB.Repositorios
         public async Task<IEnumerable<Livro>> ListarTodos()
         {
             var livros = await _Livro.ToListAsync();
+            foreach (var l in livros)
+            {
+                await _context.Set<Autor>().Include(a => a.Livros).ThenInclude(l => l.Autores).ToListAsync();
+            }
+
             return livros;
 
         }

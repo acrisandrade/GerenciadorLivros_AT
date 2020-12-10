@@ -35,6 +35,7 @@ namespace Projeto_API
             services.AddTransient<ServicosAutor>();
             services.AddTransient<ServicosLivro>();
             ConfiguracaoInjecaoRepositorio.ConfigurarRepositorio(services);
+
             services.AddAuthentication(Options =>
             {
                 Options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -45,13 +46,13 @@ namespace Projeto_API
                 {
                     options.SaveToken = true;
                     options.RequireHttpsMetadata = false;
-                    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                    options.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidateIssuer = true,
                         ValidateAudience = true,
                         ValidAudience = "https://www.infnet.edu.br",
                         ValidIssuer = "https://www.infnet.edu.br",
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("assessmentdoviadodojohn"))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("assessmentaspnetdoodio"))
                     };
                 });
         }

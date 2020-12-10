@@ -30,18 +30,18 @@ namespace Projeto_MVC.Controllers
             using(var httpclient = new HttpClient())
             {
                 httpclient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenString);
-                using (var response = await httpclient.GetAsync("https://localhost:44381/livros"))
+                using (var response = await httpclient.GetAsync("https://localhost:44376/api/livros"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     livro = JsonConvert.DeserializeObject<List<Livro>>(apiResponse);
                 }
             }
-            return View("livros", livro);
+            return View("Visualizacoes", livro);
         }
 
         private string GenerateJSONWebToken()
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("assessmentdoviadodojohn"));
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("assessmentaspnetdoodio"));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var token = new JwtSecurityToken(
                 issuer: "https://www.infnet.edu.br",
