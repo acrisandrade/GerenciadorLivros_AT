@@ -84,16 +84,22 @@ namespace Projeto_MVC.Controllers
         {
 
             LivrosViewModel livros = new LivrosViewModel();
-            var autores
+            var autores = new List<ID_Classes>();
             foreach (var a in TodosAutores)
             {
                 var autor = new Autor();
+
                 using (var httpClient = new HttpClient())
                 {
-                    using (var reponse = await httpClient.GetAsync("https://localhost:44376/api/autores/" + id))
+                    using (var reponse = await httpClient.GetAsync("https://localhost:44376/api/autores/" + a))
                     {
                         string apiResponse = await reponse.Content.ReadAsStringAsync();
                         autor = JsonConvert.DeserializeObject<Autor>(apiResponse);
+                        var idClasses = new ID_Classes()
+                        {
+                            AutoresId = autor.Id,
+                        };
+                        autores.Add(idClasses);
                     }
                 }
             }
@@ -102,11 +108,11 @@ namespace Projeto_MVC.Controllers
                 Titulo = Titulo,
                 ISBN = ISBN,
                 Ano = Ano,
-                Autores.
+                Autores = autores,
             };
             using (var httpClient = new HttpClient())
             {
-                StringContent content = new StringContent(JsonConvert.SerializeObject(livros), Encoding.UTF8, "application/json");
+                StringContent content = new StringContent(JsonConvert.SerializeObject(livro), Encoding.UTF8, "application/json");
                 using (var response = await httpClient.PostAsync("https://localhost:44376/api/livros/", content))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();

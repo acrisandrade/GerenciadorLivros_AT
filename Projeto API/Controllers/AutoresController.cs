@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dominio_GerenciadorLivros.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServicosAplicacao.Servicos;
 
@@ -12,6 +13,7 @@ namespace Projeto_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize]
     public class AutoresController : ControllerBase
     {
         private readonly ServicosAutor _autorServicos;
@@ -19,6 +21,7 @@ namespace Projeto_API.Controllers
         {
             _autorServicos = servico;
         }
+
         // GET: api/<AutoresController>
         [HttpGet]
         public async Task <IEnumerable<Autor>> Get()

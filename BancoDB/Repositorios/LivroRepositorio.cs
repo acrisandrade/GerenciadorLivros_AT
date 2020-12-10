@@ -66,6 +66,10 @@ namespace BancoDB.Repositorios
         public async Task<Livro> Detalhes(Guid id)
         {
             var livro = await _Livro.FindAsync(id);
+            
+            await _context.Set<Autor>().Include(a => a.Livros).ThenInclude(l => l.Autores).ToListAsync();
+            //await _db.Set<Author>().Include(a => a.BooksAuthors).ThenInclude(b => b.Author).ToListAsync();
+
             if (livro == null)
             {
                 return null;

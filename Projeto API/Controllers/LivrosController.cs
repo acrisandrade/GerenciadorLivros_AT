@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Dominio_GerenciadorLivros.Models;
 using Dominio_GerenciadorLivros.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ServicosAplicacao.Servicos;
 
@@ -13,6 +14,7 @@ namespace Projeto_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize]
     public class LivrosController : ControllerBase
     {
         private readonly ServicosLivro _livroServicos;
@@ -34,15 +36,20 @@ namespace Projeto_API.Controllers
         [HttpGet("{id}")]
         public async Task <LivrosViewModel> Get(Guid id)
         {
-            var livros = await _livroServicos.LivroEspecifico(id);
-            var autores = _servicosAutor.Listar();
+            var livro = await _livroServicos.LivroEspecifico(id);
+            var autores = new List<Autor>();
+            foreach(var a in livro.Autores)
+            {
+                autores.Add(a.Autores);
+            }
+            
             var viewLivro = new LivrosViewModel()
             {
-                Id = livros.Id,
-                Titulo = livros.Titulo,
-                ISBN = livros.ISBN,
-                Ano = livros.Ano,
-                TodosAutores = autores.Result,
+                Id = livro.Id,
+                Titulo = livro.Titulo,
+                ISBN = livro.ISBN,
+                Ano = livro.Ano,
+                TodosAutores = autores,
             };
             return viewLivro;
         }

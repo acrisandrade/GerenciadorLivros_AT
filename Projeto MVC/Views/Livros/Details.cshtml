@@ -28,6 +28,15 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Ano)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.TodosAutores)
+        </dt>
+        @foreach (var a in Model.TodosAutores)
+        {
+            <dd class="col-sm-10">
+                @($"{a.Nome} {a.Sobrenome}")
+            </dd>
+        }
     </dl>
 </div>
 <div>
