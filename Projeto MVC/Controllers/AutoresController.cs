@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Dominio_GerenciadorLivros.Models;
+using Dominio_GerenciadorLivros.Token;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -23,6 +25,7 @@ namespace Projeto_MVC.Controllers
             List<Autor> ListaAutores = new List<Autor>();
             using (var httpClient = new HttpClient())
             {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token.GerarToken);
                 using (var response = await httpClient.GetAsync("https://localhost:44376/api/autores/"))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -38,7 +41,8 @@ namespace Projeto_MVC.Controllers
             var autor = new Autor();
             using(var httpClient = new HttpClient())
             {
-                using(var reponse = await httpClient.GetAsync("https://localhost:44376/api/autores/" + id))
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token.GerarToken);
+                using (var reponse = await httpClient.GetAsync("https://localhost:44376/api/autores/" + id))
                 {
                     string apiResponse = await reponse.Content.ReadAsStringAsync();
                     autor = JsonConvert.DeserializeObject<Autor>(apiResponse);
@@ -61,7 +65,8 @@ namespace Projeto_MVC.Controllers
             using(var httpClient = new HttpClient())
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(autor), Encoding.UTF8, "application/json");
-                using(var response = await httpClient.PostAsync("https://localhost:44376/api/autores/", content))
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token.GerarToken);
+                using (var response = await httpClient.PostAsync("https://localhost:44376/api/autores/", content))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     autores = JsonConvert.DeserializeObject<Autor>(apiResponse);
@@ -76,7 +81,8 @@ namespace Projeto_MVC.Controllers
             Autor autor = new Autor();
             using (var httpClient = new HttpClient())
             {
-                using(var response = await httpClient.GetAsync("https://localhost:44376/api/autores/" + id))
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token.GerarToken);
+                using (var response = await httpClient.GetAsync("https://localhost:44376/api/autores/" + id))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     autor = JsonConvert.DeserializeObject<Autor>(apiResponse);
@@ -100,8 +106,9 @@ namespace Projeto_MVC.Controllers
                 content.Add(new StringContent(autor.Nome.ToString()), "Nome");
                 content.Add(new StringContent(autor.Sobrenome.ToString()), "Sobrenome");
                 content.Add(new StringContent(autor.Email.ToString()), "Email");
-               // content.Add(new StringContent(autor.Livros.ToString()), "Livros");
+                // content.Add(new StringContent(autor.Livros.ToString()), "Livros");
 
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token.GerarToken);
                 using (var response = await httpClient.PutAsync("https://localhost:44376/api/autores/", content))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
@@ -116,7 +123,8 @@ namespace Projeto_MVC.Controllers
         {
             using (var httpClient = new HttpClient())
             {
-                using(var response = await  httpClient.DeleteAsync("https://localhost:44376/api/autores/" + id))
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token.GerarToken);
+                using (var response = await  httpClient.DeleteAsync("https://localhost:44376/api/autores/" + id))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                 }

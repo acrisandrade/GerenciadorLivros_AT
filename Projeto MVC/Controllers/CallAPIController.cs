@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Dominio_GerenciadorLivros.Models;
+using Dominio_GerenciadorLivros.Token;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -18,38 +19,26 @@ namespace Projeto_MVC.Controllers
 
         [HttpGet]
         public IActionResult Index() => View();
-       
+
 
         [HttpPost]
-        public async Task<IActionResult> Index(string Usuario , string Senha)
+        public async Task<IActionResult> Index(Login log)
         {
-            if((Usuario != "usuario") || (Senha != "senha"))
-                return View((object)"Entre com usuario e senha");
-            var tokenString = GenerateJSONWebToken();
-            List<Livro> livro = new List<Livro>();
-            using(var httpclient = new HttpClient())
+            StringContent content = new StringContent(JsonConvert.SerializeObject(log), Encoding.UTF8, "application/json");
+            using (var httpclient = new HttpClient())
             {
-                httpclient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", tokenString);
-                using (var response = await httpclient.GetAsync("https://localhost:44376/api/livros"))
+                using (var response = await httpclient.PostAsync("https://localhost:44376/api/Usuario", content))
                 {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        return Unauthorized();
+                    }
+
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    livro = JsonConvert.DeserializeObject<List<Livro>>(apiResponse);
+                    Token.GerarToken = apiResponse;
                 }
             }
-            return View("Visualizacoes", livro);
-        }
-
-        private string GenerateJSONWebToken()
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("assessmentaspnetdoodio"));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-            var token = new JwtSecurityToken(
-                issuer: "https://www.infnet.edu.br",
-                audience: "https://www.infnet.edu.br",
-                expires: DateTime.Now.AddHours(3),
-                signingCredentials: credentials
-                );
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return RedirectToAction("Index", "Livros");
         }
 
     }

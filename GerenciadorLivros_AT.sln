@@ -13,15 +13,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Projeto API", "Projeto API\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CamadaDados", "CamadaDados", "{2E6433D5-05A8-4A17-9D91-6D041E8513BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BancoDB", "BancoDB\BancoDB.csproj", "{0602BD51-448B-488D-82B1-C5B310F61FFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BancoDB", "BancoDB\BancoDB.csproj", "{0602BD51-448B-488D-82B1-C5B310F61FFC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dominio", "Dominio", "{846C8443-21F1-44D2-85E6-11F1006B52E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dominio_GerenciadorLivros", "Dominio_GerenciadorLivros\Dominio_GerenciadorLivros.csproj", "{BD173F1E-D8ED-4163-8594-0B78C168B426}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dominio_GerenciadorLivros", "Dominio_GerenciadorLivros\Dominio_GerenciadorLivros.csproj", "{BD173F1E-D8ED-4163-8594-0B78C168B426}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Servicos", "Servicos", "{790FF0D3-230A-4DB7-9BE8-B16EDD8FB55C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicosAplicacao", "ServicosAplicacao\ServicosAplicacao.csproj", "{210669CD-574D-4B67-8500-74861B3F130A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServicosAplicacao", "ServicosAplicacao\ServicosAplicacao.csproj", "{210669CD-574D-4B67-8500-74861B3F130A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

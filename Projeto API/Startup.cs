@@ -55,7 +55,7 @@ namespace Projeto_API
                     {
                         ValidateIssuer = true,
                         ValidateAudience = true,
-                        ValidAudience = appseting.ValidoEm,
+                        ValidAudience = "https://www.infnet.edu.br",
                         ValidIssuer = "https://www.infnet.edu.br",
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("assessmentaspnetdoodio"))
                     };

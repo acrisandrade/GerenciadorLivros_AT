@@ -4,6 +4,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dominio_GerenciadorLivros.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -16,7 +18,7 @@ namespace Projeto_API.Controllers
         [HttpPost]
         public ActionResult Login(Login usuario)
         {
-            if (usuario.Usuario == "Usuario" && usuario.Senha == "123456")
+            if (usuario.Usuario == "usuario" && usuario.Senha == "senha")
             {
                 var token = GenerateJSONWebToken();
 
@@ -40,6 +42,5 @@ namespace Projeto_API.Controllers
                 );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
     }
 }
