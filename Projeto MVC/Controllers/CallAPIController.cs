@@ -46,7 +46,7 @@ namespace Projeto_MVC.Controllers
             var token = new JwtSecurityToken(
                 issuer: "https://www.infnet.edu.br",
                 audience: "https://www.infnet.edu.br",
-                expires: DateTime.Now.AddDays(3),
+                expires: DateTime.Now.AddHours(3),
                 signingCredentials: credentials
                 );
             return new JwtSecurityTokenHandler().WriteToken(token);
